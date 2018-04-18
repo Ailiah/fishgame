@@ -1,0 +1,117 @@
+body{
+    background-color: white;
+    font-size: 0.9;
+    margin-left: 10vw;
+    margin-top: 1vw;
+    text-align: center;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    width: 75%;
+
+}
+h1 {
+    font: 'Arial Narrow', sans-serif;
+    font-size: 4vw;
+    margin: 0vw;
+    color: #000000;
+    text-transform: uppercase;
+  }
+h2{
+    margin: 0vw; 
+    margin-bottom: 0.2vw; 
+}
+span{
+    color:#1323b3;
+}
+
+#test{
+    font-size: 4.4vw;
+}
+p {
+    margin: 0vw;
+}
+
+.screens {
+    text-align: left;
+}
+
+#smallLogo {
+    text-align: left;
+    font-size: 0.8vw;
+}
+
+#wrapper {
+    overflow:auto;
+    width: 100%;
+    height: 11vw;
+    /* border: solid 1px green */
+}
+
+#left{
+    float:left;
+    /* display: inline-block; */
+    width: 15%;
+    margin-left: 2vw;
+    height: auto;
+    text-align: left;
+    font-weight: bold;
+    border: solid 1px rgb(248, 0, 0)
+}
+#left2{
+    /* display: inline-block; */
+    width: 15%;
+    height: auto;
+    font-weight: bold;
+    float: left;
+    /* border: solid 1px rgb(248, 0, 0) */
+}
+#center {
+    margin:0;
+    display: inline-block;
+    width: 9%;
+    margin-bottom: 0.2vw;
+    border: 1px solid black;
+}
+#right {
+    vertical-align:top;
+    text-align: right;
+    /* display: inline-block; */
+    width: 50%;
+    float:right;
+    margin-right: 2vw;
+    /* border: solid 1px rgb(248, 0, 0) */
+}
+#bottomMenu{
+    padding: 1vw;
+}
+
+#speciesScreen{
+    border: 1px solid rgb(78, 3, 255);
+}
+.screens{
+    font-size: 0.9vw;
+}
+.infoText{
+    font-size: 0.6vw;
+}
+#bestCanvas {
+
+    height: 25vw;
+    width: 75vw;
+    border: 1px solid black
+}   
+#sliderId::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 23px;
+    height: 24px;
+    border: 0;
+    background: url('resources/1bWiik3.png');
+    cursor: pointer;
+}
+
+#sliderId::-moz-range-thumb {
+    width: 30px;
+    height: 21px;
+    border: 0;
+    background: url('resources/test.png');
+    cursor: pointer;
+}

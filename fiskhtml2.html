@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="fiskcss.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+</head>
+
+<body>
+    <div id="logo">
+        <h1>FISH<span id="test">G</span><span id="test2">AME</span></h1>
+        <h3>THE AQUATIC EXTINCTION PREVENTION SIMULATOR</h3>
+        <p>v.0.1</p>
+    </div>
+    <div id="smallLogo" hidden>
+        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION SIMULATOR- v.0.1
+        </p>
+    </div>
+    <hr>
+    <div id="wrapper2" hidden>
+        <div id="center">
+            <p id="months" title="Months"></p>
+            <p id="years" title="Years"></p>
+        </div>
+        <div id="hideButtons" style="display: none;">
+            <button id="speciesbutton" class="infoButton" type="button" title="Display the species menu" onclick="speciesScreenFunction();">Species</button>
+            <button id="mapbutton" class="infoButton" type="button" title="Display the ocean map" onclick="mapScreenFunction();">Map</button>
+            <button id="evolutionbutton" class="infoButton" type="button" title="Display the evolution menu" onclick="evolutionScreenFunction();">Evolution</button>
+            <button id="historybutton" class="infoButton" type="button" title="Display the ocean history" onclick="historyScreenFunction();">History</button>
+        </div>
+        <hr>
+    </div>
+    <div id="wrapper" hidden>
+        <div id="left">
+        </div>
+        <div id="left2">
+        </div>
+        <div id="right">
+            <p id="ocean1"></p>
+        </div>
+    </div>
+
+    <form id="startMenu" onsubmit="return false;">
+        <p>Welcome to Fishgame! You have been chosen to take control of a small fish population and guide them on their journey
+            to dominate the ocean.
+            <br>They are looking up to you as their future is based on your decisions. Do not let them down.</br>
+        </p>
+        <div id=bottomMenu>
+            <p>To begin, name your species:</p>
+            <input id="insertPlayerName" type="text" name="fishname" value="Fish">
+            <p>Choose the amount of other species in the ocean:</p>
+            <input type="range" min="1" max="15" value="7" id="sliderId" oninput="menuSlider(sliderId)">
+            <p>Amount:
+                <p id="showSliderAmount"></p>
+            </p>
+        </div>
+        <button title="Begin your journey" id="begin" class="infoButton" type="button" onclick="enterPlayerName()">Begin your journey</button>
+        <p>
+            </div>
+            <hr>
+            <i title ="A quote by Carl Sagan">"Extinction is the rule, survival is the exception"</i>
+            <p></p>
+    </form>
+
+    <div class="screens">
+        <div id="speciesScreen" hidden>
+            <h2>Species</h2>
+            <div class="infoText">
+                <p>The ability to quickly adapt to changing conditions in the ocean is essential for survival.
+                    <br> The adaption points can be used to alter which conditions are optimal for your species.</p>
+                <hr>
+            </div>
+            <div id=speciesName>
+            </div>
+            <div id=adaptionPoints>
+            </div>
+            <div id=speciesTemp></div>
+            <button id="tempPos" class="adaptionButton" type="button" onclick="adaptionTemperaturePos()">+</button>
+            <button id="tempNeg" class="adaptionButton" type="button" onclick="adaptionTemperatureNeg();">-</button>
+            <div id=speciesSalt></div>
+            <button id="saltPos" class="adaptionButton" type="button" onclick="adaptionSalinityPos()">+</button>
+            <button id="saltNeg" class="adaptionButton" type="button" onclick="adaptionSalinityNeg();">-</button>
+            <div id=speciesTaste></div>
+            <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
+            <button id="tasteNeg" class="adaptionButton" type="button" onclick="adaptionTasteNeg();">-</button>
+        </div>
+        <div id="mapScreen" hidden>
+            <h2>The Ocean Map</h2>
+            <div class="infoText">
+                <p>A map of the ocean. Cruel monsters swim beneath those waves.</p>
+                <hr>
+            </div>
+            <canvas id="bestCanvas" width="200" height="100"></canvas>
+
+        </div>
+        <div id="evolutionScreen" hidden>
+            <h2>Evolution</h2>
+            <div class="infoText">
+                <p>As time passes, the characteristics of a species changes as genetic variations are passed down to the next
+                    generation.
+                    <br> Use your evolution points to change your species DNA. You gain one evolution point every 10 years.
+                    <hr>
+            </div>
+        </div>
+        <div id="historyScreen" hidden>
+            <h2>History</h2>
+            <div class="infoText">
+                <p>Events long forgotten by most people
+                </p>
+                <hr>
+                <div id = "historyTest"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="fiskjavascript.js"></script>
+
+</body>
+
+</html>
