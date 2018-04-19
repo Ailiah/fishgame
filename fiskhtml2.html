@@ -14,10 +14,10 @@
     <div id="logo">
         <h1>FISH<span id="test">G</span><span id="test2">AME</span></h1>
         <h3>THE AQUATIC EXTINCTION PREVENTION SIMULATOR</h3>
-        <p>v.0.1</p>
+        <p>v.0.2</p>
     </div>
     <div id="smallLogo" hidden>
-        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION SIMULATOR- v.0.1
+        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION SIMULATOR- v.0.2
         </p>
     </div>
     <hr>
@@ -25,10 +25,12 @@
         <div id="center">
             <p id="months" title="Months"></p>
             <p id="years" title="Years"></p>
+            <p id="adaptions" title="The amount of adaption points you have"></p>
+            <p id="evolutions" title="The amount of evolution points you have"></p>
         </div>
         <div id="hideButtons" style="display: none;">
-            <button id="speciesbutton" class="infoButton" type="button" title="Display the species menu" onclick="speciesScreenFunction();">Species</button>
             <button id="mapbutton" class="infoButton" type="button" title="Display the ocean map" onclick="mapScreenFunction();">Map</button>
+            <button id="speciesbutton" class="infoButton" type="button" title="Display the species menu" onclick="speciesScreenFunction();">Species</button>
             <button id="evolutionbutton" class="infoButton" type="button" title="Display the evolution menu" onclick="evolutionScreenFunction();">Evolution</button>
             <button id="historybutton" class="infoButton" type="button" title="Display the ocean history" onclick="historyScreenFunction();">History</button>
         </div>
@@ -79,14 +81,14 @@
             <div id=adaptionPoints>
             </div>
             <div id=speciesTemp></div>
-            <button id="tempPos" class="adaptionButton" type="button" onclick="adaptionTemperaturePos()">+</button>
             <button id="tempNeg" class="adaptionButton" type="button" onclick="adaptionTemperatureNeg();">-</button>
+            <button id="tempPos" class="adaptionButton" type="button" onclick="adaptionTemperaturePos()">+</button>
             <div id=speciesSalt></div>
-            <button id="saltPos" class="adaptionButton" type="button" onclick="adaptionSalinityPos()">+</button>
             <button id="saltNeg" class="adaptionButton" type="button" onclick="adaptionSalinityNeg();">-</button>
+            <button id="saltPos" class="adaptionButton" type="button" onclick="adaptionSalinityPos()">+</button>
             <div id=speciesTaste></div>
-            <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
             <button id="tasteNeg" class="adaptionButton" type="button" onclick="adaptionTasteNeg();">-</button>
+            <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
         </div>
         <div id="mapScreen" hidden>
             <h2>The Ocean Map</h2>

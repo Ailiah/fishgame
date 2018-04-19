@@ -27,12 +27,13 @@ var ctx = c.getContext("2d");
 var test = document.getElementById("showSliderAmount")
 test.innerHTML = sliderId
 const taste = Object.freeze({
-1: "Poison",
-  2: "Shit",
-  3: "Paletable",
-  4: "Tasty",
-  5: "3-Michelin worthy",
-  6: "Yes"
+    0: "Inedible",
+    1: "Slightly poisonous",
+    2: "Disgusting",
+    3: "Bad",
+    4: "Decent",
+    5: "Good",
+    6: "Great"
 })
 //STARTING THE GAME//
 function enterPlayerName() {
@@ -64,28 +65,24 @@ function startGameFunction() {
 }
 function menuSlider(slider) {
     var sliderAmount = document.getElementById("showSliderAmount");
-    console.log(slider)
     // sliderId = document.getElementById("sliderId").value;
     sliderAmount.innerHTML = slider.value
 }
 //TIME FUNCTION//
 function timeFunction() {
-    var timeBetweenMonths = 250//Game Speed; 1000ms = 1 second.
+    var timeBetweenMonths = 45//Game Speed; 1000ms = 1 second.
     if (months < 12) {
         months++
         document.getElementById("months").innerHTML = "Month: " + months
         document.getElementById("years").innerHTML = "Year: " + years
         fishBreeding();
         marketValue();
-        oceanFunction();
-        oceanPlankton();
         fishDeathByMarketValue();
         oceanFoodLeft();
         totalFishKg();
         totalFish();
         fishDeathByMarketValue();
         fishDeathByPredatorsFunction();
-        // gameEnder();
         printFishAmount();
         setTimeout(timeFunction, timeBetweenMonths)
     } else {
@@ -95,7 +92,8 @@ function timeFunction() {
         oceanFunction();
         temperatureResistance();
         saltResistance();
-        aiAdaption();
+        aiAdaptionTasteOrTemp()
+        console.log(years)
         if (years % 10 === 0) {
             evolutionPoints();
         }
@@ -126,29 +124,29 @@ function mapScreenFunction() {
     document.getElementById("evolutionScreen").style.display = "none";
     document.getElementById("historyScreen").style.display = "none";
     ctx.beginPath();
-    ctx.moveTo(100,0);
-    ctx.lineTo(100,200);
+    ctx.moveTo(100, 0);
+    ctx.lineTo(100, 200);
     ctx.stroke();
-  
-  function drawCircle(x){
-    ctx.beginPath();
-    ctx.arc(x,50,10,0,2*Math.PI);
-    ctx.fillStyle="black";
-    ctx.fill();
-  }
-  function drawtext(x){
-    ctx.beginPath();
-    ctx.fillText("blub blub",10,10)
-    ctx.fillStyle="black";
-    ctx.fill();
-  }
-  var x = 0;
-  setInterval(function(){ 
-    ctx.clearRect(0,0,200,200);
-    drawCircle(x%200);
-    drawtext(x%200)
-    x++;
-  }, 25);
+
+    function drawCircle(x) {
+        ctx.beginPath();
+        ctx.arc(x, 50, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
+    }
+    function drawtext(x) {
+        ctx.beginPath();
+        ctx.fillText("blub blub", 10, 10)
+        ctx.fillStyle = "black";
+        ctx.fill();
+    }
+    var x = 0;
+    setInterval(function () {
+        ctx.clearRect(0, 0, 200, 200);
+        drawCircle(x % 200);
+        drawtext(x % 200)
+        x++;
+    }, 25);
 }
 function historyScreenFunction() {
     document.getElementById("historyScreen").style.display = "block";
@@ -157,10 +155,9 @@ function historyScreenFunction() {
     document.getElementById("mapScreen").style.display = "none";
 }
 
-
 //FISHINFO//
 function fishInfo(fishId, fishTotalAmount, fishDeadAmount, fishFullNames, fishAdaptionPoints,
-    fishAverageSizeKg, fishEvolutionPoints, fishAge, fishTemperatureTolerance, fishSaltTolerance, 
+    fishAverageSizeKg, fishEvolutionPoints, fishAge, fishTemperatureTolerance, fishSaltTolerance,
     fishMarketValue, fishTempModifier, fishSaltModifier, fishDeathByFishers, fishDeathByPredators, fishTaste, fishIsAlive, fishAggression, isPlayer) {
     this.fishId = fishId;
     this.fishTotalAmount = fishTotalAmount;
@@ -224,7 +221,7 @@ function fishInfo(fishId, fishTotalAmount, fishDeadAmount, fishFullNames, fishAd
     this.getId = function () {
         return this.fishId;
     }
-    this.getPlayer = function (){
+    this.getPlayer = function () {
         return this.isPlayer;
     }
 }
@@ -241,10 +238,10 @@ function fishRandomizer() {
     fullNameList = shuffle(fullNameList)
     for (i = 0; i < sliderId; i++) {
         finalFishInformationList.push(new fishInfo(y, //Assigns each fish a number
-            25000, //Amount of fish alive per species
+            50000, //Amount of fish alive per species
             0, //Amount of dead
             fullNameList[i], //Gives fish their full name
-            1, //Fish adaption points at start (+1)
+            4, //Fish adaption points at start (+1)
             Math.floor(Math.random() * (20 - 1) + 1), //Average size of fish (in kg)
             0, //Evolution points at start (+1)
             0, //Fish age at birth
@@ -258,15 +255,15 @@ function fishRandomizer() {
             6, //Taste
             1,//Is alive
             1,//Aggression
-            false)); 
+            false));//is Player
         y = y + 1
     }
     var playerName = document.getElementById("insertPlayerName").value;
     finalFishInformationList.push(new fishInfo(0, //Assigns each fish a number
-        25000, //Amount of fish alive per species
+        50000, //Amount of fish alive per species
         0, //Amount of dead
         playerName, //Gives fish their full name
-        50, //Fish adaption points at start (+1)
+        4, //Fish adaption points at start (+1)
         Math.floor(Math.random() * (20 - 1) + 1), //Average size of fish (in kg)
         0, //Evolution points at start (+1)
         0, //Fish age at birth
@@ -280,7 +277,7 @@ function fishRandomizer() {
         6, //Taste
         1,//Is alive
         1,//Aggression
-        true)); 
+        true)); //is Player
     console.log(JSON.stringify(finalFishInformationList))
     temperatureResistance()
     saltResistance()
@@ -303,17 +300,16 @@ function totalFishKg() {
     });
 }
 function printFishAmount() {
-    var onceWhat = ["great ","glorious ","proud ","strong ","excellent ","wonderful ","capable ","common ","large ","huge "]
-    var diedOut = ["has died", "has passed away","has expired", "has perished", "has succumbed", "has ceased to exist", "has met its end", "has departed from this world"]
-    var deathReason = ["eaten by ","mutilated by ","injured by ","picked apart by ","wasted by ","butchered by ","demolished by ","destroyed by ", "cut to pieces by ", "swallowed by ", "put to death by "]
-    var theKiller = ["another fish", "a bird", "a shark", "a walrus", "a dolphin", "a lonely old fisherman", "the crew of a fishing vessel", 
-    "a small kid with a bucket", "a diver", "recreational fishers", "something unexplainable", "monsters of the deep", "old friends", "the most common fish in the ocean", "a mermaid", "a killer whale"]
+    var onceWhat = ["great ", "glorious ", "proud ", "strong ", "excellent ", "wonderful ", "capable ", "common ", "large ", "huge "]
+    var diedOut = ["has died", "has passed away", "has expired", "has perished", "has succumbed", "has ceased to exist", "has met its end", "has departed from this world"]
+    var deathReason = ["eaten by ", "mutilated by ", "injured by ", "picked apart by ", "wasted by ", "butchered by ", "demolished by ", "destroyed by ", "cut to pieces by ", "swallowed by ", "put to death by "]
+    var theKiller = ["another fish", "a bird", "a shark", "a walrus", "a dolphin", "a lonely old fisherman", "the crew of a fishing vessel",
+        "a small kid with a bucket", "a diver", "recreational fishers", "something unexplainable", "monsters of the deep", "old friends", "the most common fish in the ocean", "a mermaid", "a killer whale"]
 
     randomonceWhat = onceWhat[Math.floor(Math.random() * onceWhat.length)];
     randomdiedOut = diedOut[Math.floor(Math.random() * diedOut.length)];
     randomdeathReason = deathReason[Math.floor(Math.random() * deathReason.length)];
     randomtheKiller = theKiller[Math.floor(Math.random() * theKiller.length)];
-
 
     document.getElementById("left").innerHTML = "";
     document.getElementById("left2").innerHTML = "";
@@ -327,7 +323,7 @@ function printFishAmount() {
         }
         else if (fish.fishTotalAmount < 50 && fish.fishIsAlive == 1) {
             var para = document.createElement("p");
-            var node = document.createTextNode("In month "+months+", in the year of our Lord "+years+", the last organism of the once "+ randomonceWhat+fish.fishFullNames+" species "+ randomdiedOut+". "+"It was "+ randomdeathReason+ randomtheKiller+".");
+            var node = document.createTextNode("In month " + months + ", in the year of our Lord " + years + ", the last organism of the once " + randomonceWhat + fish.fishFullNames + " species " + randomdiedOut + ". " + "It was " + randomdeathReason + randomtheKiller + ".");
             para.appendChild(node);
             var element = document.getElementById("historyTest");
             element.appendChild(para);
@@ -337,8 +333,8 @@ function printFishAmount() {
             // console.log("the dead salute you")
         }
     });
-        
-    
+
+
 
     finalFishInformationList.slice(8, 16).forEach(function (fish) {
         if (fish.fishTotalAmount > 50 && fish.fishIsAlive == 1) {
@@ -350,7 +346,7 @@ function printFishAmount() {
         }
         else if (fish.fishTotalAmount < 50 && fish.fishIsAlive == 1) {
             var para = document.createElement("p");
-            var node = document.createTextNode("In month "+months+", in the year of our Lord "+years+", the last organism of the once "+ randomonceWhat+fish.fishFullNames+" species "+ randomdiedOut+". "+"It was "+ randomdeathReason+ randomtheKiller+".");
+            var node = document.createTextNode("In month " + months + ", in the year of our Lord " + years + ", the last organism of the once " + randomonceWhat + fish.fishFullNames + " species " + randomdiedOut + ". " + "It was " + randomdeathReason + randomtheKiller + ".");
             para.appendChild(node);
             var element = document.getElementById("historyTest");
             element.appendChild(para);
@@ -522,7 +518,6 @@ function saltResistance() { //Fish temperature modifiers
     });
 
 }
-
 function fishBreeding() { //Fish population growth rate
     var bornRate = 0
     var deathRate = 0
@@ -554,9 +549,6 @@ function fishBreeding() { //Fish population growth rate
 
 
 }
-
-
-
 function marketValue() { //The price for each fish
     finalFishInformationList.forEach(function (fish) {
         finalFishInformationList[i].getValue()
@@ -619,18 +611,18 @@ function fishDeathByPredatorsFunction() { //Fish death caused by predators
 
     });
 }
-
 //ADAPTION FUNCTIONS//
 function adaptionPoints() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer()) {
             fish.addAdaption()
-            document.getElementById("speciesName").innerHTML = "Species name: "+fish.fishFullNames
-            document.getElementById("adaptionPoints").innerHTML = "Adaption points available: "+fish.fishAdaptionPoints
-            document.getElementById("speciesTemp").innerHTML = "Optimal temperature: "+fish.fishTemperatureTolerance
-            document.getElementById("speciesSalt").innerHTML = "Optimal salinity: "+fish.fishSaltTolerance
-            document.getElementById("speciesTaste").innerHTML = "Taste: "+taste[fish.fishTaste]
-
+            document.getElementById("speciesName").innerHTML = "Species name: " + fish.fishFullNames
+            document.getElementById("adaptionPoints").innerHTML = "Adaption points available: " + fish.fishAdaptionPoints
+            document.getElementById("speciesTemp").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance
+            document.getElementById("speciesSalt").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance
+            document.getElementById("speciesTaste").innerHTML = "Taste: " + taste[fish.fishTaste]
+            document.getElementById("adaptions").innerHTML = "AP: " + fish.fishAdaptionPoints
+            document.getElementById("evolutions").innerHTML = "EP: " + fish.fishEvolutionPoints
         }
     });
 
@@ -639,7 +631,7 @@ function adaptionTemperaturePos() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer() && fish.fishAdaptionPoints >= 1 && fish.fishTemperatureTolerance <= 35) {
             fish.fishTemperatureTolerance = fish.fishTemperatureTolerance + 1
-            document.getElementById("speciesTemp").innerHTML = "Optimal temperature: "+fish.fishTemperatureTolerance
+            document.getElementById("speciesTemp").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance
             fish.removeAdaption()
         }
     });
@@ -648,7 +640,7 @@ function adaptionTemperatureNeg() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer() && fish.fishAdaptionPoints >= 1 && fish.fishTemperatureTolerance >= 1) {
             fish.fishTemperatureTolerance = fish.fishTemperatureTolerance - 1
-            document.getElementById("speciesTemp").innerHTML = "Optimal temperature: "+fish.fishTemperatureTolerance
+            document.getElementById("speciesTemp").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance
             fish.removeAdaption()
         }
     });
@@ -657,7 +649,7 @@ function adaptionSalinityPos() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer() && fish.fishAdaptionPoints >= 1 && fish.fishSaltTolerance < 5) {
             fish.fishSaltTolerance = fish.fishSaltTolerance + 0.5
-            document.getElementById("speciesSalt").innerHTML = "Optimal salinity: "+fish.fishSaltTolerance
+            document.getElementById("speciesSalt").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance
             fish.removeAdaption()
         }
     });
@@ -666,7 +658,7 @@ function adaptionSalinityNeg() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer() && fish.fishAdaptionPoints >= 1 && fish.fishSaltTolerance >= 0.5) {
             fish.fishSaltTolerance = fish.fishSaltTolerance - 0.5
-            document.getElementById("speciesSalt").innerHTML = "Optimal salinity: "+fish.fishSaltTolerance
+            document.getElementById("speciesSalt").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance
             fish.removeAdaption()
         }
     });
@@ -675,7 +667,7 @@ function adaptionTastePos() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer() && fish.fishAdaptionPoints >= 1 && fish.fishTaste < 6) {
             fish.fishTaste = fish.fishTaste + 1
-            document.getElementById("speciesTaste").innerHTML = "Taste: "+taste[fish.fishTaste]
+            document.getElementById("speciesTaste").innerHTML = "Taste: " + taste[fish.fishTaste]
             fish.removeAdaption()
         }
     });
@@ -684,9 +676,40 @@ function adaptionTasteNeg() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer() && fish.fishAdaptionPoints >= 1 && fish.fishTaste >= 3) {
             fish.fishTaste = fish.fishTaste - 1
-            document.getElementById("speciesTaste").innerHTML = "Taste: "+taste[fish.fishTaste]
+            document.getElementById("speciesTaste").innerHTML = "Taste: " + taste[fish.fishTaste]
             fish.removeAdaption()
         }
+    });
+}
+
+function aiAdaptionTasteOrTemp(){
+    finalFishInformationList.forEach(function (fish) {
+        var pickOne = Math.floor(Math.random() * 2) + 1
+        var pickOne2 = Math.floor(Math.random() * 6) + 1
+        if (fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1 && fish.fishTaste >= 5 &&fish.getPlayer()==false) {
+            if (pickOne == 1) {
+                aiAdaption()
+            }
+            else{
+                fish.fishTaste = fish.fishTaste - 1
+            fish.removeAdaption()
+            }
+        }
+    
+        else if (fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1 && fish.fishTaste >= 3 && fish.fishTaste <=4 && fish.getPlayer()==false) {
+            if (pickOne2 <= 2) {
+                aiAdaption()
+            }
+            else{
+                fish.fishTaste = fish.fishTaste - 1
+                fish.removeAdaption()
+        }
+    }
+        else if (fish.getAmount()>50 && fish.getPlayer()==false){
+            aiAdaption()
+        
+        }
+        
     });
 }
 
@@ -698,7 +721,8 @@ function aiAdaption() {
         var tempVs = tempDifference / oceanTemperature
         var saltVs = saltDifference / oceanSalinity
         var tempSaltVsDifference = tempVs - saltVs
-        if ((fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1) && (tempSaltVsDifference <= 0.35 && tempSaltVsDifference <= -0.35) && fish.fishId != 0) {
+        if ((fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1) && (tempSaltVsDifference <= 0.6 && tempSaltVsDifference >= -0.6) && fish.fishId != 0) {
+            // console.log("The tempSaltVsDifference is1:"+tempSaltVsDifference)
             if (pickOne == 1 && tempDifference > 0) {
                 fish.fishTemperatureTolerance = fish.fishTemperatureTolerance + 1
                 fish.removeAdaption()
@@ -715,6 +739,9 @@ function aiAdaption() {
                 fish.fishSaltTolerance = fish.fishSaltTolerance - 0.5
                 fish.removeAdaption()
             }
+
+            // console.log("(CLOSE)Sea temperature is: "+oceanTemperature.toFixed(0)+", my optimal is "+fish.fishTemperatureTolerance.toFixed(0))
+            // console.log("(CLOSE)Sea salinity is: "+oceanSalinity.toFixed(1)+", my optimal is "+fish.fishSaltTolerance.toFixed(1))
         }
 
     });
@@ -727,7 +754,8 @@ function aiAdaption2() {
         var tempVs = tempDifference / oceanTemperature
         var saltVs = saltDifference / oceanSalinity
         var tempSaltVsDifference = tempVs - saltVs
-        if ((tempSaltVsDifference > 0.35 || tempSaltVsDifference > -0.35) && fish.fishId != 0) {
+        if ((tempSaltVsDifference > 0.6|| tempSaltVsDifference < -0.6) && fish.fishId != 0) {
+            console.log("The tempSaltVsDifference is1:"+tempSaltVsDifference)
             if ((fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1) && tempDifference > 0 && fish.fishId != 0) {
                 fish.fishTemperatureTolerance = fish.fishTemperatureTolerance + 1
                 fish.removeAdaption()
@@ -744,17 +772,17 @@ function aiAdaption2() {
                 fish.fishSaltTolerance = fish.fishSaltTolerance - 0.5
                 fish.removeAdaption()
             }
+            // console.log("Sea temperature is: "+oceanTemperature.toFixed(0)+", my optimal is "+fish.fishTemperatureTolerance.toFixed(0))
+            // console.log("Sea salinity is: "+oceanSalinity.toFixed(1)+", my optimal is "+fish.fishSaltTolerance.toFixed(1))
         }
     });
+
 }
 //EVOLUTION FUNCTIONS//
 function evolutionPoints() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50) {
             fish.addEvolution() //Adds an evolution point
-            // ctx5.clearRect(0, 0, 500, 500)
-            // ctx5.font = "1.1vw Arial";
-            // ctx5.fillText("Evolution points available: " + fish.fishEvolutionPoints, 15, 45)
         }
     });
 }
@@ -782,17 +810,6 @@ function kFormatter(num) {
     }
 }
 
-//GAME ENDING FUNCTIONS//
-
-
-// function gameEnder() {
-//     finalFishInformationList.forEach(function (fish) {
-//         if (fish.getAmount() < 50 && fish.fishIsAlive == 1) {
-//             console.log("blub")
-//         }
-//     });
-//     finalFishInformationList[i].getId()
-// }
 function fishAliver() { //Sum of all fishes.
     var deadArray = []
     finalFishInformationList.forEach(function (fish) {
@@ -801,11 +818,11 @@ function fishAliver() { //Sum of all fishes.
         sumOfDead = deadArray.reduce(function (a, b) { return a + b; }, 0);
 
     });
-    
+
     if (sumOfDead == 1) {
         finalFishInformationList.forEach(function (fish) {
-            if (fish.getALife()==1){
-                if (fish.getPlayer()){
+            if (fish.getALife() == 1) {
+                if (fish.getPlayer()) {
                     console.log("YOU WON")
                 }
                 else {
@@ -814,7 +831,7 @@ function fishAliver() { //Sum of all fishes.
             }
 
 
-    });
+        });
     }
 }
 //JQUERY FUNCTIONS//
