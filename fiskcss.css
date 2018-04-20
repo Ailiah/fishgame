@@ -45,6 +45,12 @@ p {
     height: 11vw;
     /* border: solid 1px green */
 }
+#wrapper2 {
+    overflow:auto;
+    width: 100%;
+    height: auto;
+    /* border: solid 1px green */
+}
 
 #left{
     float:left;
@@ -66,11 +72,19 @@ p {
     /* border: solid 1px rgb(248, 0, 0) */
 }
 #center {
+    width: 9%;
     margin:0;
     display: inline-block;
-    width: 9%;
     margin-bottom: 0.2vw;
     border: 1px solid black;
+}
+#gameSpeed{
+    font-size: 0.8vw;
+    float:right;
+    border: 1px solid black;
+}
+.speedButton{
+    font-size: 0.5vw;
 }
 #right {
     vertical-align:top;

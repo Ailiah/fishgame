@@ -1,4 +1,5 @@
 //GLOBAL VARIABLES//
+var gameSpeed = 500//Game Speed; 1000ms = 1 second.
 var finalFishInformationList = [];
 var fishesDead = [];
 var fishDeathByFishers = 0
@@ -35,6 +36,20 @@ const taste = Object.freeze({
     5: "Good",
     6: "Great"
 })
+const monthName = Object.freeze({
+    1: "January",
+    2: "Febuary",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11:"November", 
+    12:"December"
+})
 //STARTING THE GAME//
 function enterPlayerName() {
     var playerName = document.getElementById("insertPlayerName").value;
@@ -70,10 +85,9 @@ function menuSlider(slider) {
 }
 //TIME FUNCTION//
 function timeFunction() {
-    var timeBetweenMonths = 45//Game Speed; 1000ms = 1 second.
     if (months < 12) {
         months++
-        document.getElementById("months").innerHTML = "Month: " + months
+        document.getElementById("months").innerHTML = monthName[months]
         document.getElementById("years").innerHTML = "Year: " + years
         fishBreeding();
         marketValue();
@@ -84,7 +98,7 @@ function timeFunction() {
         fishDeathByMarketValue();
         fishDeathByPredatorsFunction();
         printFishAmount();
-        setTimeout(timeFunction, timeBetweenMonths)
+        setTimeout(timeFunction, gameSpeed)
     } else {
         months = months - 12;
         years = years + 1;
@@ -93,14 +107,13 @@ function timeFunction() {
         temperatureResistance();
         saltResistance();
         aiAdaptionTasteOrTemp()
-        console.log(years)
         if (years % 10 === 0) {
             evolutionPoints();
         }
         if (years % 5 === 0) {
             adaptionPoints();
         }
-        setTimeout(timeFunction(years), timeBetweenMonths)
+        setTimeout(timeFunction(years), gameSpeed)
     }
     return months, years
 }
@@ -178,6 +191,9 @@ function fishInfo(fishId, fishTotalAmount, fishDeadAmount, fishFullNames, fishAd
     this.fishIsAlive = fishIsAlive;
     this.fishAggression = fishAggression;
     this.isPlayer = isPlayer;
+    this.getName = function () {
+        return this.fishFullNames
+    }
     this.addEvolution = function () {
         this.fishEvolutionPoints = this.fishEvolutionPoints + 1
     }
@@ -226,8 +242,10 @@ function fishInfo(fishId, fishTotalAmount, fishDeadAmount, fishFullNames, fishAd
     }
 }
 function fishRandomizer() {
-    var prefixList = ["Top", "Best", "Great", "Golden", "King", "Toxic", "Red", "Blue", "Retarded", "Armored", "Flathead", "Killer", "Electric", "Ugly", "Strange", "Slippery",];
-    var speciesList = ["Pike", "Tuna", "Swordfish", "Cod", "Catfish", "Mackerel", "Carp", "Bass", "Cavefish", "Herring", "Trout", "Eel", "Sardine", "Flounder", "Dogfish", ""];
+    var prefixList = ["Top", "Best", "Great", "Golden", "King", "Toxic", "Red", "Blue", "Retarded", "Armored", "Flathead", "Killer", "Electric", "Ugly", "Strange", "Slippery", 
+    "Prince", "Grotesque", "Hideous", "Attractive", "Atrocious", "Adorable", "Oily", "Shiny", "Sleek", "Evasive", "Superior", "Insignificant", "Agile", "Transparent", "Penetrating", "Stubborn", "Enduring", "Radioactive"];
+    var speciesList = ["Pike", "Tuna", "Swordfish", "Cod", "Catfish", "Mackerel", "Carp", "Bass", "Cavefish", "Herring", "Trout", "Eel", "Sardine", "Flounder", "Dogfish", "Perch", 
+    "Goldfish", "Trout", "Bream", "Ray", "Halibut", "Koi", "Mudsucker", "Monkfish", "Pufferfish", "Hake", "Snapper", "Stingray", "Piranha", "Roach", "Burbot", "Tench", "Ide", "Rudd"];
     var fullNameList = [];
     var y = 1
     prefixList.forEach(function (a1) {
@@ -238,7 +256,7 @@ function fishRandomizer() {
     fullNameList = shuffle(fullNameList)
     for (i = 0; i < sliderId; i++) {
         finalFishInformationList.push(new fishInfo(y, //Assigns each fish a number
-            50000, //Amount of fish alive per species
+            1000, //Amount of fish alive per species
             0, //Amount of dead
             fullNameList[i], //Gives fish their full name
             4, //Fish adaption points at start (+1)
@@ -300,11 +318,12 @@ function totalFishKg() {
     });
 }
 function printFishAmount() {
-    var onceWhat = ["great ", "glorious ", "proud ", "strong ", "excellent ", "wonderful ", "capable ", "common ", "large ", "huge "]
-    var diedOut = ["has died", "has passed away", "has expired", "has perished", "has succumbed", "has ceased to exist", "has met its end", "has departed from this world"]
-    var deathReason = ["eaten by ", "mutilated by ", "injured by ", "picked apart by ", "wasted by ", "butchered by ", "demolished by ", "destroyed by ", "cut to pieces by ", "swallowed by ", "put to death by "]
+    var onceWhat = ["great ", "glorious ", "proud ", "strong ", "excellent ", "wonderful ", "capable ", "common ", "large ", "huge ","virile ", "fertile ", "energetic ", "industrious ", "tireless ", "steadfast ", "persistent ", "potent ", "stubborn ", "brave ", "withstanding ", "resilient ", "dominating "]
+    var diedOut = ["died", "passed away", "expired", "perished", "succumbed", "ceased to exist", "met its end", "departed from this world", "went to the afterlife","joined his fallen comrades", "took its final breath", "said its last words", "went to meet its ancestors"]
+    var deathReason = ["eaten by ", "mutilated by ", "ended by ", "picked apart by ", "wasted by ", "butchered by ", "demolished by ", "destroyed by ", "cut to pieces by ", "swallowed by ", "put to death by ", "cut in half by ", "decapacitated by ", "stuck between the teeth of ", "beaten after a long fight with "]
     var theKiller = ["another fish", "a bird", "a shark", "a walrus", "a dolphin", "a lonely old fisherman", "the crew of a fishing vessel",
-        "a small kid with a bucket", "a diver", "recreational fishers", "something unexplainable", "monsters of the deep", "old friends", "the most common fish in the ocean", "a mermaid", "a killer whale"]
+        "a small kid with a bucket", "a diver", "recreational fishers", "something unexplainable", "monsters of the deep", "old friends", 
+        "the most common fish in the ocean", "a mermaid", "a killer whale", "native fishermen with spears", "a polar bear lost at sea", "a starving castaway", "survivors of a nearby naval battle", "a hungry missionary", "someone it once called a friend", "an ancient creature", "the one it least expected would betray it"]
 
     randomonceWhat = onceWhat[Math.floor(Math.random() * onceWhat.length)];
     randomdiedOut = diedOut[Math.floor(Math.random() * diedOut.length)];
@@ -323,7 +342,7 @@ function printFishAmount() {
         }
         else if (fish.fishTotalAmount < 50 && fish.fishIsAlive == 1) {
             var para = document.createElement("p");
-            var node = document.createTextNode("In month " + months + ", in the year of our Lord " + years + ", the last organism of the once " + randomonceWhat + fish.fishFullNames + " species " + randomdiedOut + ". " + "It was " + randomdeathReason + randomtheKiller + ".");
+            var node = document.createTextNode("In the month of  " + monthName[months] + ", year " + years + ", the last organism of the once " + randomonceWhat + fish.fishFullNames+ " species " + randomdiedOut + ". " + "It was " + randomdeathReason + randomtheKiller + ".");
             para.appendChild(node);
             var element = document.getElementById("historyTest");
             element.appendChild(para);
@@ -333,6 +352,7 @@ function printFishAmount() {
             // console.log("the dead salute you")
         }
     });
+
 
 
 
@@ -346,7 +366,7 @@ function printFishAmount() {
         }
         else if (fish.fishTotalAmount < 50 && fish.fishIsAlive == 1) {
             var para = document.createElement("p");
-            var node = document.createTextNode("In month " + months + ", in the year of our Lord " + years + ", the last organism of the once " + randomonceWhat + fish.fishFullNames + " species " + randomdiedOut + ". " + "It was " + randomdeathReason + randomtheKiller + ".");
+            var node = document.createTextNode("In the month of " + monthName[months] + ", year " + years + ", the last organism of the once " + randomonceWhat + fish.fishFullNames + " species " + randomdiedOut + ". " + "It was " + randomdeathReason + randomtheKiller + ".");
             para.appendChild(node);
             var element = document.getElementById("historyTest");
             element.appendChild(para);
@@ -755,7 +775,7 @@ function aiAdaption2() {
         var saltVs = saltDifference / oceanSalinity
         var tempSaltVsDifference = tempVs - saltVs
         if ((tempSaltVsDifference > 0.6|| tempSaltVsDifference < -0.6) && fish.fishId != 0) {
-            console.log("The tempSaltVsDifference is1:"+tempSaltVsDifference)
+            // console.log("The tempSaltVsDifference is1:"+tempSaltVsDifference)
             if ((fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1) && tempDifference > 0 && fish.fishId != 0) {
                 fish.fishTemperatureTolerance = fish.fishTemperatureTolerance + 1
                 fish.removeAdaption()
@@ -823,10 +843,20 @@ function fishAliver() { //Sum of all fishes.
         finalFishInformationList.forEach(function (fish) {
             if (fish.getALife() == 1) {
                 if (fish.getPlayer()) {
-                    console.log("YOU WON")
+                    var para = document.createElement("p");
+                    var node = document.createTextNode("In the month of  " + monthName[months] + ", year " + years + ", only the "+randomonceWhat+" species named " +fish.fishFullNames
+                    +" is alive in the ocean! With no competition, survival seems guaranteed.");
+                    para.appendChild(node);
+                    var element = document.getElementById("historyTest");
+                    element.appendChild(para);
                 }
                 else {
-                    console.log("you lost lol")
+                    var para = document.createElement("p");
+                    var node = document.createTextNode("In the month of  " + monthName[months] + ", year " + years + ", only the "+randomonceWhat+" species named " +fish.fishFullNames
+                    +" is alive in the ocean! With no competition, survival seems guaranteed.");
+                    para.appendChild(node);
+                    var element = document.getElementById("historyTest");
+                    element.appendChild(para);
                 }
             }
 
@@ -835,7 +865,7 @@ function fishAliver() { //Sum of all fishes.
     }
 }
 //JQUERY FUNCTIONS//
-
+$(document).ready(function(){
 $(function () {
     setInterval(function () {
         $('h1').effect('bounce', 1000)
@@ -843,4 +873,43 @@ $(function () {
     setInterval(function () {
         $('h1').effect('puff', 1000)
     }, 500);
+}); 
+$(document).keyup(function(e){
+    if (e.keyCode == 107 && gameSpeed==500){
+       (gameSpeed = gameSpeed - 250);
+       console.log("Gamespeed x2")
+    }
+    else if (e.keyCode == 107 && gameSpeed==250){
+       (gameSpeed = gameSpeed - 125);
+       console.log("Gamespeed x3")
+    }
+    else if (e.keyCode == 107 && gameSpeed==125){
+       (gameSpeed = gameSpeed - 62.5);
+       console.log("Gamespeed x4")
+    }
+    else if (e.keyCode == 109 && gameSpeed==250){
+       (gameSpeed = gameSpeed + 250);
+       console.log("Gamespeed x1")
+    }
+    else if (e.keyCode == 109 && gameSpeed==125){
+       (gameSpeed = gameSpeed + 125);
+       console.log("Gamespeed x2")
+    }
+    else if (e.keyCode == 109 && gameSpeed==62.5){
+       (gameSpeed = gameSpeed + 62.5);
+       console.log("Gamespeed x3")
+    } 
+ });
+ $('#speed1').click(function (){
+     gameSpeed = 500;
+});
+$('#speed2').click(function (){
+    gameSpeed = 250;
+});
+$('#speed3').click(function (){
+    gameSpeed = 125;
+});
+$('#speed4').click(function (){
+    gameSpeed = 62.5;
+});
 }); 

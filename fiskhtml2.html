@@ -7,17 +7,16 @@
     <link rel="stylesheet" type="text/css" href="fiskcss.css">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-
 </head>
 
 <body>
     <div id="logo">
         <h1>FISH<span id="test">G</span><span id="test2">AME</span></h1>
         <h3>THE AQUATIC EXTINCTION PREVENTION SIMULATOR</h3>
-        <p>v.0.2</p>
+        <p>v.0.3</p>
     </div>
     <div id="smallLogo" hidden>
-        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION SIMULATOR- v.0.2
+        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION SIMULATOR- v.0.3
         </p>
     </div>
     <hr>
@@ -33,6 +32,13 @@
             <button id="speciesbutton" class="infoButton" type="button" title="Display the species menu" onclick="speciesScreenFunction();">Species</button>
             <button id="evolutionbutton" class="infoButton" type="button" title="Display the evolution menu" onclick="evolutionScreenFunction();">Evolution</button>
             <button id="historybutton" class="infoButton" type="button" title="Display the ocean history" onclick="historyScreenFunction();">History</button>
+        </div>
+        <div id="gameSpeed" title="Use numpad + and - to change speed">
+            <p>Speed</p>
+            <button id="speed1" class="speedButton" type="button" title="Gamespeed x1">x1</button>
+            <button id="speed2" class="speedButton" type="button" title="Gamespeed x2">x2</button>
+            <button id="speed3" class="speedButton" type="button" title="Gamespeed x3">x3</button>
+            <button id="speed4" class="speedButton" type="button" title="Gamespeed x4">x4</button>
         </div>
         <hr>
     </div>
@@ -89,6 +95,11 @@
             <div id=speciesTaste></div>
             <button id="tasteNeg" class="adaptionButton" type="button" onclick="adaptionTasteNeg();">-</button>
             <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
+            <form id="fishListForm">
+                <select id="fishSelect">
+                  <option>View another species</option>
+                </select>
+              </form>
         </div>
         <div id="mapScreen" hidden>
             <h2>The Ocean Map</h2>
