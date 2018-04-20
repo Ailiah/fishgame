@@ -13,10 +13,10 @@
     <div id="logo">
         <h1>FISH<span id="test">G</span><span id="test2">AME</span></h1>
         <h3>THE AQUATIC EXTINCTION PREVENTION SIMULATOR</h3>
-        <p>v.0.3</p>
+        <p>v.0.35</p>
     </div>
     <div id="smallLogo" hidden>
-        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION SIMULATOR- v.0.3
+        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION SIMULATOR- v.0.35
         </p>
     </div>
     <hr>
@@ -28,13 +28,14 @@
             <p id="evolutions" title="The amount of evolution points you have"></p>
         </div>
         <div id="hideButtons" style="display: none;">
-            <button id="mapbutton" class="infoButton" type="button" title="Display the ocean map" onclick="mapScreenFunction();">Map</button>
-            <button id="speciesbutton" class="infoButton" type="button" title="Display the species menu" onclick="speciesScreenFunction();">Species</button>
-            <button id="evolutionbutton" class="infoButton" type="button" title="Display the evolution menu" onclick="evolutionScreenFunction();">Evolution</button>
-            <button id="historybutton" class="infoButton" type="button" title="Display the ocean history" onclick="historyScreenFunction();">History</button>
+            <button id="mapbutton" class="infoButton" type="button" title="Keybind: 1" onclick="mapScreenFunction();">Map</button>
+            <button id="speciesbutton" class="infoButton" type="button" title="Keybind: 2" onclick="speciesScreenFunction();">Species</button>
+            <button id="evolutionbutton" class="infoButton" type="button" title="Keybind: 3" onclick="evolutionScreenFunction();">Evolution</button>
+            <button id="historybutton" class="infoButton" type="button" title="Keybind: 4" onclick="historyScreenFunction();">History</button>
         </div>
         <div id="gameSpeed" title="Use numpad + and - to change speed">
             <p>Speed</p>
+            <button id="pause" class="speedButton" type="button" title="Pause">&#10074;&#10074;</button>
             <button id="speed1" class="speedButton" type="button" title="Gamespeed x1">x1</button>
             <button id="speed2" class="speedButton" type="button" title="Gamespeed x2">x2</button>
             <button id="speed3" class="speedButton" type="button" title="Gamespeed x3">x3</button>
@@ -51,7 +52,19 @@
             <p id="ocean1"></p>
         </div>
     </div>
-
+    <div id="playAgain" hidden>
+        <div id="gameWon" hidden>
+            <p>As your species is the only one left in this ocean, their survival seems to be guaranteed. They probably wont need your help anymore. What would you like to do?</p>
+            <button id="continue"onclick= "continueFunction();">Continue this ocean</button>
+            <button id="anotherocean"onclick="window.location.href=window.location.href">Play another ocean</button>
+        </div>
+        <div id="gameLost" hidden>
+            <p>You have failed to help your species take control of this ocean. Only you will know they ever existed. What would you like to do now?</p>
+            <button id="continue" onclick= "continueFunction();">Continue watching this ocean</button>
+            <button id="anotherocean" onclick="window.location.href=window.location.href">Play another ocean</button>
+            </div>
+    </div>
+    <audio id="audio" src=""></audio>
     <form id="startMenu" onsubmit="return false;">
         <p>Welcome to Fishgame! You have been chosen to take control of a small fish population and guide them on their journey
             to dominate the ocean.
@@ -66,20 +79,22 @@
                 <p id="showSliderAmount"></p>
             </p>
         </div>
-        <button title="Begin your journey" id="begin" class="infoButton" type="button" onclick="enterPlayerName()">Begin your journey</button>
+        <button title="Begin your journey" id="begin" class="infoButton" type="button" onclick="enterPlayerName();play()">Begin your journey</button>
         <p>
             </div>
             <hr>
             <i title ="A quote by Carl Sagan">"Extinction is the rule, survival is the exception"</i>
-            <p></p>
     </form>
-
+    <div id="textBoxThing" hidden>
+        <b id= "textBoxLogTitle">Latest Event</b>
+        <div id = "historyTest2">Year 0 - A new era has begun.</div>
+    </div>
     <div class="screens">
         <div id="speciesScreen" hidden>
             <h2>Species</h2>
             <div class="infoText">
                 <p>The ability to quickly adapt to changing conditions in the ocean is essential for survival.
-                    <br> The adaption points can be used to alter which conditions are optimal for your species.</p>
+                <br> The adaption points can be used to alter which conditions are optimal for your species.</p>
                 <hr>
             </div>
             <div id=speciesName>
@@ -107,7 +122,7 @@
                 <p>A map of the ocean. Cruel monsters swim beneath those waves.</p>
                 <hr>
             </div>
-            <canvas id="bestCanvas" width="200" height="100"></canvas>
+            <canvas id="bestCanvas" width="50" height="50"></canvas>
 
         </div>
         <div id="evolutionScreen" hidden>
@@ -125,7 +140,8 @@
                 <p>Events long forgotten by most people
                 </p>
                 <hr>
-                <div id = "historyTest"></div>
+                <p class="historyTestClass">January, year 0 - The first new fish were born. The Great Protofish that once had conquered and ruled the ocean for thousands of years split into genetically different species. The second evolution of fish has begun.</p>
+                <div id = "historyTest" class="historyTestClass"></div>
             </div>
         </div>
     </div>

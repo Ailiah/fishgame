@@ -55,7 +55,7 @@ p {
 #left{
     float:left;
     /* display: inline-block; */
-    width: 15%;
+    width: 18%;
     margin-left: 2vw;
     height: auto;
     text-align: left;
@@ -64,7 +64,7 @@ p {
 }
 #left2{
     /* display: inline-block; */
-    width: 15%;
+    width: 18%;
     height: auto;
     font-weight: bold;
     float: left;
@@ -92,15 +92,37 @@ p {
     /* display: inline-block; */
     width: 50%;
     float:right;
+    margin-top: 1vw;
     margin-right: 2vw;
     /* border: solid 1px rgb(248, 0, 0) */
+}
+#textBoxThing{
+    border:1px solid black;
+    text-align: left;
+    height:1.5vw;
+    overflow: hidden;
+    font-size: 0.6vw;
+    width: 28vw;
 }
 #bottomMenu{
     padding: 1vw;
 }
-
+#historyTest{
+    font-size: 0.8vw;
+}
+#historyScreen{
+    height: 24.5vw;
+    overflow: auto;
+}
+#mapScreen{
+    height:24.5vw;
+    overflow:hidden;
+}
+.historyTestClass{
+    font-size: 0.8vw;
+}
 .screens{
-    font-size: 0.9vw;
+    font-size: 0.8vw;
 }
 .infoText{
     font-size: 0.6vw;
