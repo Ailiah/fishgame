@@ -64,6 +64,7 @@ function enterPlayerName() {
         document.getElementById("logo").style.display = "none";
         document.getElementById("smallLogo").style.display = "block";
         document.getElementById("textBoxThing").style.display = "block";
+        document.getElementById("screens").style.display = "block";
         historyScreenFunction()
         startGameFunction()
     }
@@ -72,16 +73,16 @@ function startGameFunction() {
     fish();
     marketValue();
     oceanName();
-    oceanFunction(); //The ocean values are available from year 0
-    oceanPlankton(); //Plankton is available from year 0
+    oceanFunction();
+    oceanPlankton();
     fishDeathByMarketValue()
     adaptionPoints()
     evolutionPoints()
+    conservationStatus()
     setTimeout(timeFunction)
 }
 function menuSlider(slider) {
     var sliderAmount = document.getElementById("showSliderAmount");
-    // sliderId = document.getElementById("sliderId").value;
     sliderAmount.innerHTML = slider.value
 }
 //TIME FUNCTION//
@@ -101,7 +102,8 @@ function timeFunction() {
             fishDeathByMarketValue();
             fishDeathByPredatorsFunction();
             printFishAmount();
-            updateDifference()
+            updateDifference();
+            conservationStatus();
             setTimeout(timeFunction, gameSpeed)
         } else {
             months = months - 12;
@@ -129,24 +131,28 @@ function timeFunction() {
 //MENU FUNCTIONS//
 function speciesScreenFunction() {
     document.getElementById("speciesScreen").style.display = "block";
+    document.getElementById("speciesScreenAi").style.display = "block";
     document.getElementById("evolutionScreen").style.display = "none";
     document.getElementById("mapScreen").style.display = "none";
     document.getElementById("historyScreen").style.display = "none";
 }
 function evolutionScreenFunction() {
     document.getElementById("evolutionScreen").style.display = "block";
+    document.getElementById("speciesScreenAi").style.display = "none";
     document.getElementById("speciesScreen").style.display = "none";
     document.getElementById("mapScreen").style.display = "none";
     document.getElementById("historyScreen").style.display = "none";
 }
 function mapScreenFunction() {
     document.getElementById("mapScreen").style.display = "block";
+    document.getElementById("speciesScreenAi").style.display = "none";
     document.getElementById("speciesScreen").style.display = "none";
     document.getElementById("evolutionScreen").style.display = "none";
     document.getElementById("historyScreen").style.display = "none";
 }
 function historyScreenFunction() {
     document.getElementById("historyScreen").style.display = "block";
+    document.getElementById("speciesScreenAi").style.display = "none";
     document.getElementById("speciesScreen").style.display = "none";
     document.getElementById("evolutionScreen").style.display = "none";
     document.getElementById("mapScreen").style.display = "none";
@@ -155,7 +161,7 @@ function historyScreenFunction() {
 //FISHINFO//
 function fishInfo(fishId, fishTotalAmount, fishDeadAmount, fishFullNames, fishAdaptionPoints,
     fishAverageSizeKg, fishEvolutionPoints, fishAge, fishTemperatureTolerance, fishSaltTolerance,
-    fishMarketValue, fishTempModifier, fishSaltModifier, fishDeathByFishers, fishDeathByPredators, fishTaste, fishIsAlive, fishAggression, isPlayer) {
+    fishMarketValue, fishTempModifier, fishSaltModifier, fishDeathByFishers, fishDeathByPredators, fishTaste, fishIsAlive, fishAggression, fishConservationStatus, isPlayer) {
     this.fishId = fishId;
     this.fishTotalAmount = fishTotalAmount;
     this.fishDeadAmount = fishDeadAmount;
@@ -174,9 +180,14 @@ function fishInfo(fishId, fishTotalAmount, fishDeadAmount, fishFullNames, fishAd
     this.fishTaste = fishTaste;
     this.fishIsAlive = fishIsAlive;
     this.fishAggression = fishAggression;
+    this.fishConservationStatus = fishConservationStatus;
     this.isPlayer = isPlayer;
+
     this.getName = function () {
         return this.fishFullNames
+    }
+    this.getStatus = function () {
+        return this.fishConservationStatus
     }
     this.addEvolution = function () {
         this.fishEvolutionPoints = this.fishEvolutionPoints + 1
@@ -257,7 +268,8 @@ function fish() {
             6, //Taste
             1,//Is alive
             1,//Aggression
-            false));//is Player
+            0,//Conservationstatus
+            false, )); //is player
         y = y + 1
     }
     var playerName = document.getElementById("insertPlayerName").value;
@@ -279,10 +291,12 @@ function fish() {
         6, //Taste
         1,//Is alive
         1,//Aggression
-        true)); //is Player
+        0,//Conservationstatus
+        true, )); //is player
     console.log(JSON.stringify(finalFishInformationList))
     temperatureResistance()
     saltResistance()
+    fishNamesToDropDown()
 }
 function totalFish() {
     var fishAmountArray = []
@@ -415,7 +429,7 @@ function oceanPlankton() { //Controls the amount of plankton
 function oceanName() {
     var oceanList1 = ["The Ancient", "The Supreme", "The Great", "The Wet", "The Deep", "The Cold", "The Neptunian", "The Huge", "The Massive", "The Terrifying",
         "The Old", "The New", "The Small", "The Stormy", "The Dark", "The Restless", "The Shoreless", "The Polar", "The Beautiful", "The Attractive", "The Agonizing",
-        "The Lovely", "The Wild", "The Tiny", "The Sexy", "The Unruly", "The Quiet", "The Harrowing", "The Hollow", "The Chilling"]
+        "The Lovely", "The Wild", "The Tiny", "The Sexy", "The Unruly", "The Quiet", "The Harrowing", "The Hollow", "The Chilling", "The Brutal", "The Unforgiving", "The Stormy", "The Forsaken", "The Calm"]
     var oceanList2 = ["Sea", "Ocean", "Abyss"]
     var oceanList3 = ["of Death", "of Dead Fish", "of Secrets", "of Hopelessness", "of Desperation", "of Misery", "of Sorrow", "of Pain", "of Misery", "of Regret", "of Remorse",
         "of Suffering", "of Hardship", "of Misfortune", "of Torment", "of Discomfort", "of Bitterness", "of Regret", "of Dissatisfaction", "of Mourning", "of Grief", "of Angry Plankton", "of Dead Plankton", "of Terrible Secrets"]
@@ -492,27 +506,25 @@ function fishWeightModifier() { //Returns modifier which will be added to the pl
 
 function conservationStatus() {
     finalFishInformationList.forEach(function (fish) {
-        var conservationVar = ""
-        if (conservationVar = 0) {
-            conservationVar = "LC"
+        document.getElementById("speciesPop").innerHTML = "Species population size: " + fish.fishTotalAmount.toFixed(0)
+        document.getElementById("speciesCons").innerHTML = "Conservation status: " + fish.fishConservationStatus
+        if (fish.getAmount() >= 500000) {
+            fish.fishConservationStatus = "Least concern (LC)"
         }
-        else if ((conservationVar = 0)) {
-            conservationVar = "NT"
+        else if (fish.getAmount() < 500000 && fish.getAmount() >= 250000) {
+            fish.fishConservationStatus = "Near threatened (NT)"
         }
-        else if ((conservationVar = 0)) {
-            conservationVar = "VU"
+        else if (fish.getAmount() < 250000 && fish.getAmount() >= 50000) {
+            fish.fishConservationStatus = "Vulnerable (VU)"
         }
-        else if ((conservationVar = 0)) {
-            conservationVar = "EN"
+        else if (fish.getAmount() < 50000 && fish.getAmount() >= 2500) {
+            fish.fishConservationStatus = "Endangered (EN)"
         }
-        else if ((conservationVar = 0)) {
-            conservationVar = "CR"
-        }
-        else if ((conservationVar = 0)) {
-            conservationVar = "EW"
+        else if (fish.getAmount() < 2500 && fish.getAmount() >= 50) {
+            fish.fishConservationStatus = "Critically endangered (CR)"
         }
         else {
-            conservationVar = "EX"
+            fish.fishConservationStatus = "Extinct (EX)"
         }
     });
 }
@@ -572,12 +584,16 @@ function fishBreeding() { //Fish population growth rate
         else if (fish.getAmount() > 10000000) {
             weakGenes = 0.75
         }
+
         if (fish.getAmount() > 50) {//Minimum amount of fish a species need for survival
             bornRate = fish.fishTempModifier + foodSurplus + fish.fishSaltModifier
             deathRate = fish.fishDeathByFishers + fish.fishDeathByPredators
             growthModifier = bornRate - deathRate
             fish.fishTotalAmount = ((((fish.fishTotalAmount) * (growthModifier)) - (fish.fishTotalAmount * 0.05)) * (lastStand)) * (weakGenes) //TOTAL FISH AMOUNT * GROWTHMODIFIER-DEATH RATE
             return fish.fishTotalAmount
+        }
+        else if (fish.getAmount()<=50){
+        fish.fishTotalAmount = 0
         }
     });
 }
@@ -662,15 +678,33 @@ function adaptionPoints() {
             fish.addAdaption()
             document.getElementById("speciesName").innerHTML = "Species name: " + fish.fishFullNames
             document.getElementById("adaptionPoints").innerHTML = "Adaption points available: " + fish.fishAdaptionPoints
-            document.getElementById("speciesTemp").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance + "°C  (Difference: " + tempDifference + "°C)"
-            document.getElementById("speciesSalt").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance + "%  (Difference: " + saltDifference + "%)"
             document.getElementById("speciesTaste").innerHTML = "Taste: " + taste[fish.fishTaste]
             document.getElementById("adaptions").innerHTML = "AP: " + fish.fishAdaptionPoints
             document.getElementById("evolutions").innerHTML = "EP: " + fish.fishEvolutionPoints
+            document.getElementById("speciesValue").innerHTML = "Market value: "+fish.fishMarketValue.toFixed(2)+"€/kg"
+        }
+        else if (fish.getAmount() > 50 && fish.getPlayer() == 0) {
+            fish.addAdaption()
         }
     });
-
 }
+// function testStuff() {
+//     finalFishInformationList.forEach(function (fish) {
+//         if (fish.getAmount() > 50 && fish.getPlayer() == 0) {
+//             var tempDifference = fish.fishTemperatureTolerance - oceanTemperature.toFixed(0)
+//             var saltDifference = fish.fishSaltTolerance - oceanSalinity.toFixed(1)
+//             document.getElementById("speciesNameAi").innerHTML = "Species name: " + fish.fishFullNames
+//             document.getElementById("adaptionPointsAi").innerHTML = "Adaption points available: " + fish.fishAdaptionPoints
+//             document.getElementById("speciesTempAi").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance + "°C  (Difference: " + tempDifference.toFixed(0) + "°C)"
+//             document.getElementById("speciesSaltAi").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance + "%  (Difference: " + saltDifference.toFixed(1) + "%)"
+//             document.getElementById("speciesTasteAi").innerHTML = "Taste: " + taste[fish.fishTaste]
+//         }
+//     });
+// }
+
+
+
+
 function adaptionTemperaturePos() {
     finalFishInformationList.forEach(function (fish) {
         if (fish.getAmount() > 50 && fish.getPlayer() && fish.fishAdaptionPoints >= 1 && fish.fishTemperatureTolerance <= 35) {
@@ -746,7 +780,7 @@ function aiAdaptionTasteOrTemp() {
     finalFishInformationList.forEach(function (fish) {
         var pickOne = Math.floor(Math.random() * 2) + 1
         var pickOne2 = Math.floor(Math.random() * 6) + 1
-        if (fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1 && fish.fishTaste >= 5 && fish.getPlayer() == false) {
+        if (fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1 && fish.fishTaste >= 3 && fish.getPlayer() == false) {
             if (pickOne == 1) {
                 aiAdaption()
             }
@@ -755,19 +789,8 @@ function aiAdaptionTasteOrTemp() {
                 fish.removeAdaption()
             }
         }
-
-        else if (fish.getAmount() > 50 && fish.fishAdaptionPoints >= 1 && fish.fishTaste >= 3 && fish.fishTaste <= 4 && fish.getPlayer() == false) {
-            if (pickOne2 <= 2) {
-                aiAdaption()
-            }
-            else {
-                fish.fishTaste = fish.fishTaste - 1
-                fish.removeAdaption()
-            }
-        }
-        else if (fish.getAmount() > 50 && fish.getPlayer() == false) {
+        else {
             aiAdaption()
-
         }
 
     });
@@ -879,43 +902,43 @@ function fishAliver() { //Sum of all fishes.
         sumOfDead = deadArray.reduce(function (a, b) { return a + b; }, 0);
 
     });
-    
+
     if (sumOfDead > 1 && notAgain == 0) {
         finalFishInformationList.forEach(function (fish) {
-            if (fish.getPlayer() && fish.fishIsAlive == 0){
-            console.log(notAgain)
-            playAgain()
-            notAgain = 1
-            return notAgain;
+            if (fish.getPlayer() && fish.fishIsAlive == 0) {
+                console.log(notAgain)
+                playAgain()
+                notAgain = 1
+                return notAgain;
             }
         });
-}
-if (sumOfDead == 1) {
-    finalFishInformationList.forEach(function (fish) {
-        if (fish.getALife() == 1) {
-            if (fish.getPlayer()) {
-                var para = document.createElement("p");
-                var node = document.createTextNode(monthName[months] + ", year " + years + " - only the " + randomonceWhat + " species " + fish.fishFullNames
-                    + " is alive in the ocean! They are the first fish to rule the sea alone since the Great Protofish. With no competition, survival seems guaranteed.");
-                document.getElementById("historyTest2").innerHTML = monthName[months] + ", year " + years + " - " + fish.fishFullNames + ": Last species alive"
-                para.appendChild(node);
-                var element = document.getElementById("historyTest");
-                element.appendChild(para);
-                playAgainWin()
+    }
+    if (sumOfDead == 1) {
+        finalFishInformationList.forEach(function (fish) {
+            if (fish.getALife() == 1) {
+                if (fish.getPlayer()) {
+                    var para = document.createElement("p");
+                    var node = document.createTextNode(monthName[months] + ", year " + years + " - only the " + randomonceWhat + " species " + fish.fishFullNames
+                        + " is alive in the ocean! They are the first fish to rule the sea alone since the Great Protofish. With no competition, survival seems guaranteed.");
+                    document.getElementById("historyTest2").innerHTML = monthName[months] + ", year " + years + " - " + fish.fishFullNames + ": Last species alive"
+                    para.appendChild(node);
+                    var element = document.getElementById("historyTest");
+                    element.appendChild(para);
+                    playAgainWin()
+                }
+                else {
+                    var para = document.createElement("p");
+                    var node = document.createTextNode(monthName[months] + ", year " + years + " - only the " + randomonceWhat + " species " + fish.fishFullNames
+                        + " is alive in the ocean! They are the first fish to rule the sea alone since the Great Protofish. With no competition, survival seems guaranteed.");
+                    document.getElementById("historyTest2").innerHTML = monthName[months] + ", year " + years + " - " + fish.fishFullNames + ": Last species alive"
+                    para.appendChild(node);
+                    var element = document.getElementById("historyTest");
+                    element.appendChild(para);
+                    playAgain()
+                }
             }
-            else {
-                var para = document.createElement("p");
-                var node = document.createTextNode(monthName[months] + ", year " + years + " - only the " + randomonceWhat + " species " + fish.fishFullNames
-                    + " is alive in the ocean! They are the first fish to rule the sea alone since the Great Protofish. With no competition, survival seems guaranteed.");
-                document.getElementById("historyTest2").innerHTML = monthName[months] + ", year " + years + " - " + fish.fishFullNames + ": Last species alive"
-                para.appendChild(node);
-                var element = document.getElementById("historyTest");
-                element.appendChild(para);
-                playAgain()
-            }
-        }
-    });
-}
+        });
+    }
 }
 function playAgainWin() {
     document.getElementById("wrapper").style.display = "none";
@@ -928,9 +951,9 @@ function playAgainWin() {
     document.getElementById("hideButtons").style.display = "none";
     document.getElementById("historyScreen").style.display = "none";
     document.getElementById("speciesScreen").style.display = "none";
+    document.getElementById("speciesScreenAi").style.display = "none";
     document.getElementById("evolutionScreen").style.display = "none";
     document.getElementById("mapScreen").style.display = "none";
-    pause = 0
 }
 function playAgain() {
     document.getElementById("wrapper").style.display = "none";
@@ -944,7 +967,7 @@ function playAgain() {
     document.getElementById("speciesScreen").style.display = "none";
     document.getElementById("evolutionScreen").style.display = "none";
     document.getElementById("mapScreen").style.display = "none";
-    pause = 0
+    document.getElementById("speciesScreenAi").style.display = "none";
 }
 function continueFunction() {
     document.getElementById("wrapper").style.display = "block";
@@ -954,7 +977,6 @@ function continueFunction() {
     document.getElementById("textBoxThing").style.display = "block";
     document.getElementById("playAgain").style.display = "none";
     document.getElementById("historyScreen").style.display = "block";
-    pause = 1
 }
 //AUDIO FUNCTIONS//
 function play() {
@@ -1054,4 +1076,33 @@ $(document).ready(function () {
             historyScreenFunction();
         }
     });
+
+    $('select').on('change', function() {
+        var jesus = this.value
+        finalFishInformationList.forEach(function (fish) {
+            if(jesus == fish.getName()){
+                var tempDifference = fish.fishTemperatureTolerance - oceanTemperature.toFixed(0)
+                var saltDifference = fish.fishSaltTolerance - oceanSalinity.toFixed(1)
+                document.getElementById("speciesNameAi").innerHTML = "Species name: " + fish.fishFullNames
+                document.getElementById("speciesPopAi").innerHTML = "Species population size: " + fish.fishTotalAmount.toFixed(0)
+                document.getElementById("speciesConsAi").innerHTML = "Conservation status: " + fish.fishConservationStatus
+                document.getElementById("adaptionPointsAi").innerHTML = "Adaption points available: " + fish.fishAdaptionPoints
+                document.getElementById("speciesTempAi").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance + "°C  (Difference: " + tempDifference.toFixed(0) + "°C)"
+                document.getElementById("speciesSaltAi").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance + "%  (Difference: " + saltDifference.toFixed(1) + "%)"
+                document.getElementById("speciesTasteAi").innerHTML = "Taste: " + taste[fish.fishTaste]
+                document.getElementById("speciesValueAi").innerHTML = "Market value: "+fish.fishMarketValue.toFixed(2)+"€/kg"
+            }
+      });
+    });
 }); 
+
+function fishNamesToDropDown() {
+    finalFishInformationList.forEach(function (fish) {
+        if (fish.getPlayer() == 0) {
+            var testar = document.getElementById("fishSelect");
+            var option = document.createElement("option");
+            option.text = fish.fishFullNames;
+            testar.add(option);
+        }
+    });
+}
