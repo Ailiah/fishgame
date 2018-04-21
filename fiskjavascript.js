@@ -94,7 +94,6 @@ function timeFunction() {
             document.getElementById("months").innerHTML = monthName[months]
             document.getElementById("years").innerHTML = "Year: " + years
             fishBreeding();
-            marketValue();
             fishDeathByMarketValue();
             oceanFoodLeft();
             totalFishKg();
@@ -104,6 +103,7 @@ function timeFunction() {
             printFishAmount();
             updateDifference();
             conservationStatus();
+            testFunction($("select[id='fishSelect'").find('option:selected').text())
             setTimeout(timeFunction, gameSpeed)
         } else {
             months = months - 12;
@@ -115,7 +115,7 @@ function timeFunction() {
             aiAdaptionTasteOrTemp()
             if (years % 10 === 0) {
                 evolutionPoints();
-
+                marketValue();
             }
             if (years % 5 === 0) {
                 adaptionPoints();
@@ -347,6 +347,7 @@ function printFishAmount() {
             element.appendChild(para);
             document.getElementById("historyTest2").innerHTML = monthName[months] + ", year " + years + " - " + fish.fishFullNames + ": Extinct"
             fish.killALife()
+            $("#fishSelect option").filter(function(i, e) { return $(e).text() == fish.fishFullNames}).addClass("deadFish")
         }
         else {
             // console.log("the dead salute you")
@@ -372,6 +373,7 @@ function printFishAmount() {
             element.appendChild(para);
             document.getElementById("historyTest2").innerHTML = monthName[months] + ", year " + years + " - " + fish.fishFullNames + ": Extinct"
             fish.killALife()
+            $("#fishSelect option").filter(function(i, e) { return $(e).text() == fish.fishFullNames}).addClass("deadFish")
         }
         else {
             // console.log("the dead salute you")
@@ -612,16 +614,6 @@ function marketValue() { //The price for each fish
         finalFishInformationList[i].getValue()
         fish.fishMarketValue = fish.fishAverageSizeKg + (Math.random() * (30 - 1.00) + 1.00);
         return fish.fishMarketValue
-    });
-    finalFishInformationList.forEach(function (fish) {
-        if (fish.getAmount() > 50) {
-            // ctx.fillText(fish.fishMarketValue.toFixed(1) + "€/kg", 350, y3Axis);
-
-        }
-        else {
-            // ctx.fillText("-", 350, y3Axis)
-
-        }
     });
 }
 function fishDeathByMarketValue() { //Fish death caused by fishing
@@ -1078,21 +1070,9 @@ $(document).ready(function () {
     });
 
     $('select').on('change', function() {
-        var jesus = this.value
-        finalFishInformationList.forEach(function (fish) {
-            if(jesus == fish.getName()){
-                var tempDifference = fish.fishTemperatureTolerance - oceanTemperature.toFixed(0)
-                var saltDifference = fish.fishSaltTolerance - oceanSalinity.toFixed(1)
-                document.getElementById("speciesNameAi").innerHTML = "Species name: " + fish.fishFullNames
-                document.getElementById("speciesPopAi").innerHTML = "Species population size: " + fish.fishTotalAmount.toFixed(0)
-                document.getElementById("speciesConsAi").innerHTML = "Conservation status: " + fish.fishConservationStatus
-                document.getElementById("adaptionPointsAi").innerHTML = "Adaption points available: " + fish.fishAdaptionPoints
-                document.getElementById("speciesTempAi").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance + "°C  (Difference: " + tempDifference.toFixed(0) + "°C)"
-                document.getElementById("speciesSaltAi").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance + "%  (Difference: " + saltDifference.toFixed(1) + "%)"
-                document.getElementById("speciesTasteAi").innerHTML = "Taste: " + taste[fish.fishTaste]
-                document.getElementById("speciesValueAi").innerHTML = "Market value: "+fish.fishMarketValue.toFixed(2)+"€/kg"
-            }
-      });
+        
+        testFunction(this.value)
+    
     });
 }); 
 
@@ -1103,6 +1083,23 @@ function fishNamesToDropDown() {
             var option = document.createElement("option");
             option.text = fish.fishFullNames;
             testar.add(option);
+        }
+    });
+}
+
+function testFunction(jesus){
+    finalFishInformationList.forEach(function (fish) {
+        if(jesus == fish.getName()){
+            var tempDifference = fish.fishTemperatureTolerance - oceanTemperature.toFixed(0)
+            var saltDifference = fish.fishSaltTolerance - oceanSalinity.toFixed(1)
+            document.getElementById("speciesNameAi").innerHTML = "Species name: " + fish.fishFullNames
+            document.getElementById("speciesPopAi").innerHTML = "Species population size: " + fish.fishTotalAmount.toFixed(0)
+            document.getElementById("speciesConsAi").innerHTML = "Conservation status: " + fish.fishConservationStatus
+            document.getElementById("adaptionPointsAi").innerHTML = "Adaption points available: " + fish.fishAdaptionPoints
+            document.getElementById("speciesTempAi").innerHTML = "Optimal temperature: " + fish.fishTemperatureTolerance + "°C  (Difference: " + tempDifference.toFixed(0) + "°C)"
+            document.getElementById("speciesSaltAi").innerHTML = "Optimal salinity: " + fish.fishSaltTolerance + "%  (Difference: " + saltDifference.toFixed(1) + "%)"
+            document.getElementById("speciesTasteAi").innerHTML = "Taste: " + taste[fish.fishTaste]
+            document.getElementById("speciesValueAi").innerHTML = "Market value: "+fish.fishMarketValue.toFixed(2)+"€/kg"
         }
     });
 }

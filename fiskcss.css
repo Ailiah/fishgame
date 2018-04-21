@@ -153,11 +153,15 @@ p {
     font-size: 0.6vw;
 }
 #bestCanvas {
-
     height: 25vw;
     width: 75vw;
     border: 1px solid black
 }   
+
+.deadFish{
+    color: red;
+}
+
 #sliderId::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 23px;
