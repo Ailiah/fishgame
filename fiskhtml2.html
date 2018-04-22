@@ -14,10 +14,10 @@
         <h1>FISH<span id="test">G</span><span id="test2">AME</span>
         </h1>
         <h3>THE AQUATIC EXTINCTION PREVENTION MANAGER</h3>
-        <p>v.0.41</p>
+        <p>v.0.5</p>
     </div>
     <div id="smallLogo" hidden>
-        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION MANAGER- v.0.41
+        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION MANAGER- v.0.5
         </p>
     </div>
     <hr>
@@ -25,14 +25,13 @@
         <div id="center">
             <p id="months" title="Months"></p>
             <p id="years" title="Years"></p>
-            <p id="adaptions" title="Adaption points"></p>
-            <p id="evolutions" title="Evolution points"></p>
         </div>
         <div id="hideButtons" style="display: none;">
             <button id="mapbutton" class="infoButton" type="button" title="Keybind: 1" onclick="mapScreenFunction();">Map</button>
             <button id="speciesbutton" class="infoButton" type="button" title="Keybind: 2" onclick="speciesScreenFunction();">Species</button>
             <button id="evolutionbutton" class="infoButton" type="button" title="Keybind: 3" onclick="evolutionScreenFunction();">Evolution</button>
             <button id="historybutton" class="infoButton" type="button" title="Keybind: 4" onclick="historyScreenFunction();">History</button>
+            <button id="combatbutton" class="infoButton" type="button" title="Keybind: 5" onclick="combatScreenFunction();">Combat</button>
         </div>
         <div id="gameSpeed" title="Use numpad + and - to change speed">
             <p>Speed</p>
@@ -49,6 +48,13 @@
         </div>
         <div id="left2">
         </div>
+        <div id="left3">
+                <div id="fishPicName" title="Name of your species"></div>
+                <canvas id="speciesCanvas" width="200" height="120"></canvas>
+                <div id="fishPicFull"title="Total population | Population currently in combat">aaa</div>
+                <div id="growthRate"title="Average growth last month"></div>
+                <div id="adaptions" title="Available Adaptionpoints and Evolutionpoints"></div>
+            </div>
         <div id="right">
             <p id="ocean1"></p>
         </div>
@@ -56,21 +62,22 @@
     <div id="playAgain" hidden>
         <div id="gameWon" hidden>
             <p>As your species is the only one left in this ocean, their survival seems to be guaranteed. They probably wont
-                need your help anymore. What would you like to do?</p>
+                need your help anymore.</p>
             <button id="continue" onclick="continueFunction();">Continue this ocean</button>
             <button id="anotherocean" onclick="window.location.href=window.location.href">Play another ocean</button>
         </div>
         <div id="gameLost" hidden>
-            <p>You have failed to help your species take control of this ocean. Only you will know they ever existed. What would
-                you like to do now?</p>
+            <p>You have failed to help your species take control of this ocean. Only you will know they ever existed.</p>
             <button id="continue" onclick="continueFunction();">Continue watching this ocean</button>
             <button id="anotherocean" onclick="window.location.href=window.location.href">Play another ocean</button>
         </div>
     </div>
     <audio id="audio" src=""></audio>
     <form id="startMenu" onsubmit="return false;">
-        <p>For countless years the Great Protofish species lived uncontested in the ocean. Over time the population evolved in different directions around the globe.
-            Now the decendants of the Great Protofish have become different species competing for control. The second evolution of fish is starting. Only the strong will survive the merciless sea. Will you?   
+        <p>For countless years the Great Protofish species lived uncontested in the ocean. Over time the population evolved
+            in different directions around the globe. Now the decendants of the Great Protofish have become different species
+            competing for control. The second evolution of fish is starting. Only the strong will survive the merciless sea.
+            Will you?
         </p>
         <div id=bottomMenu>
             <p>To begin, name your species:</p>
@@ -91,14 +98,12 @@
         <b id="textBoxLogTitle">Latest Event</b>
         <div id="historyTest2">Year 0 - A new era has begun.</div>
     </div>
-    <div id="screens"hidden>
+    <div id="screens" hidden>
         <div id="speciesScreen" hidden>
-                <h2>Your Species</h2>
-                <div class="infoText">
-                    <p>The ability to quickly adapt to changing conditions in the ocean is essential for survival.
-                        <br> The adaption points can be used to alter which conditions are optimal for your species.</p>
-                    <hr>
-                </div>
+            <h2>Species comparison</h2>
+            <div class="infoText">
+                <hr>
+            </div>
             <div id="speciesName">
             </div>
             <div id="speciesPop">
@@ -108,66 +113,104 @@
             <div id="adaptionPoints">
             </div>
             <div id="speciesTemp"></div>
-            <button id="tempNeg" class="adaptionButton" type="button" onclick="adaptionTemperatureNeg();">-</button>
-            <button id="tempPos" class="adaptionButton" type="button" onclick="adaptionTemperaturePos()">+</button>
             <div id="speciesSalt"></div>
-            <button id="saltNeg" class="adaptionButton" type="button" onclick="adaptionSalinityNeg();">-</button>
-            <button id="saltPos" class="adaptionButton" type="button" onclick="adaptionSalinityPos()">+</button>
             <div id="speciesTaste"></div>
-            <button id="tasteNeg" class="adaptionButton" type="button" onclick="adaptionTasteNeg();">-</button>
-            <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
             <div id="speciesValue"></div>
+            <!-- <canvas id="speciesCanvas" width="200" height="120"></canvas> -->
         </div>
-        </div>
-        <div id="speciesScreenAi" hidden>
-                <h2>Other Species</h2>
-                <form id="fishListForm">
-                        <select id="fishSelect">
-                        </select>
-                    </form>
-        <hr>
+    </div>
+    <div id="speciesScreenAi" hidden>
+        <!-- <h2>Competing Species</h2> -->
+        <!-- <hr> -->
+        <form id="fishListForm">
+            <select id="fishSelect">
+            </select>
+        </form>
+        
         <div id=aiInfo>
-        <div id="speciesNameAi"></div>
-        <div id="speciesPopAi"></div>
-        <div id="speciesConsAi"></div>
-        <div id="adaptionPointsAi"></div>
-        <div id="speciesTempAi"></div>
-        <div id="speciesSaltAi"></div>
-        <div id="speciesTasteAi"></div>
-        <div id="speciesValueAi"></div>
+            <div id="speciesNameAi"></div>
+            <div id="speciesPopAi"></div>
+            <div id="speciesConsAi"></div>
+            <div id="adaptionPointsAi"></div>
+            <div id="speciesTempAi"></div>
+            <div id="speciesSaltAi"></div>
+            <div id="speciesTasteAi"></div>
+            <div id="speciesValueAi"></div>
+        </div>
     </div>
-                    </div>
-        <div id="mapScreen" hidden>
-            <h2>The Ocean Map</h2>
-            <div class="infoText">
-                <p>A map of the ocean. Cruel monsters swim beneath those waves.</p>
-                <hr>
-            </div>
-            <canvas id="bestCanvas" width="50" height="50"></canvas>
+    <div id="mapScreen" hidden>
+        <h2>The Ocean Map</h2>
+        <div class="infoText">
+            <p>A map of the ocean. Cruel monsters swim beneath those waves.</p>
+            <hr>
+        </div>
+        <canvas id="bestCanvas"></canvas>
 
-        </div>
-        <div id="evolutionScreen" hidden>
-            <h2>Evolution</h2>
-            <div class="infoText">
-                <p>As time passes, the characteristics of a species changes as genetic variations are passed down to the next
-                    generation.
-                    <br> Use your evolution points to change your species DNA. You gain one evolution point every 10 years.
-                    <hr>
-            </div>
-        </div>
-        <div id="historyScreen" hidden>
-            <h2>History</h2>
-            <div class="infoText">
-                <p>Events long forgotten by most people
-                </p>
+    </div>
+    <div id="evolutionScreen" hidden>
+        <h2>Evolution</h2>
+        <div class="infoText">
+            <p>As time passes, the characteristics of a species changes as genetic variations are passed down to the next generation.
+                <br> Spend your adaptionpoints and evolutionpoints to alter the DNA of your fish.
                 <hr>
-                <p class="historyTestClass">January, year 0 - The first new fish were born. The Great Protofish that once had conquered and ruled the
-                    ocean for thousands of years split into genetically different species. The second evolution of fish has
-                    begun.</p>
-                <div id="historyTest" class="historyTestClass"></div>
+                <div id="evSplitLeft">
+                        <div id="speciesTemp2"></div>
+                        <button id="tempNeg" class="adaptionButton" type="button" onclick="adaptionTemperatureNeg();">-</button>
+                        <button id="tempPos" class="adaptionButton" type="button" onclick="adaptionTemperaturePos()">+</button>
+                        <div id="speciesSalt2"></div>
+                        <button id="saltNeg" class="adaptionButton" type="button" onclick="adaptionSalinityNeg();">-</button>
+                        <button id="saltPos" class="adaptionButton" type="button" onclick="adaptionSalinityPos()">+</button>
+                        <div id="speciesTaste2"></div>
+                        <button id="tasteNeg" class="adaptionButton" type="button" onclick="adaptionTasteNeg();">-</button>
+                        <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
+                </div>
+                <div id="evSplitRight">
+                <div id="evolutionPoints">
+                    </div>
+                <div class="talentButtons">
+                    <p>Tier 3</p>
+                    <button id="TierOneA" class="talentButton" type="button" onclick="">-</button>
+                    <button id="TierTwoA" class="talentButton" type="button" onclick="">-</button>
+                    <button id="TierThreeA" class="talentButton" type="button" onclick="">-</button>
+                    <hr>
+                    <p>Tier 2</p>
+                    <button id="TierOneD" class="talentButton" type="button" title="Bigger teeth increase the damage your species can cause others" onclick="">Teeth</button>
+                    <button id="TierTwoD" class="talentButton" type="button" title="Thick skin decreases death rate from combat" onclick="">Thick skin</button>
+                    <button id="TierThreeD" class="talentButton" type="button" title="Making your species poisonous will decrease market value" onclick="">Poison</button>
+                    <hr>
+                    <p>Tier 1</p>
+                    <button id="talentTaste" class="talentButton" title="By producing small amounts of toxins the taste of our species can be inedible for all non-aquatic predators. Requires Taste: Disgusting"onclick="evolutionTaste()">Inedibility 0/2</button>
+                    <button id="talentFertility" class="talentButton" type="button"  title="Increases growth rate slightly" onclick="">Fertility</button>
+                    <button id="talentCamouflage" class="talentButton" type="button"  title="Decreases amount of population in combat" onclick="">Camouflage</button>
+                    <hr>
+                </div>
+            </div>
             </div>
         </div>
     </div>
+    <div id="historyScreen" hidden>
+        <h2>History</h2>
+        <div class="infoText">
+            <p>Events long forgotten by most people
+            </p>
+            <hr>
+            <p class="historyTestClass">January, year 0 - The first new fish were born. The Great Protofish that once had conquered and ruled the ocean
+                for thousands of years split into genetically different species. The second evolution of fish has begun.
+            </p>
+            <div id="historyTest" class="historyTestClass"></div>
+        </div>
+    </div>
+    <div id="combatScreen" hidden>
+        <h2>Combat</h2>
+        <div class="infoText">
+            <p>Test test
+            </p>
+            <hr>
+            <div id="combatTest" class="combatTestClass"></div>
+        </div>
+    </div>
+    </div>
+
     </div>
     <script src="fiskjavascript.js"></script>
 
