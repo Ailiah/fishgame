@@ -14,10 +14,10 @@
         <h1>FISH<span id="test">G</span><span id="test2">AME</span>
         </h1>
         <h3>THE AQUATIC EXTINCTION PREVENTION MANAGER</h3>
-        <p>v.0.5</p>
+        <p>v.0.51</p>
     </div>
     <div id="smallLogo" hidden>
-        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION MANAGER- v.0.5
+        <p>FISHGAME: THE AQUATIC EXTINCTION PREVENTION MANAGER- v.0.51
         </p>
     </div>
     <hr>
@@ -49,12 +49,12 @@
         <div id="left2">
         </div>
         <div id="left3">
-                <div id="fishPicName" title="Name of your species"></div>
-                <canvas id="speciesCanvas" width="200" height="120"></canvas>
-                <div id="fishPicFull"title="Total population | Population currently in combat">aaa</div>
-                <div id="growthRate"title="Average growth last month"></div>
-                <div id="adaptions" title="Available Adaptionpoints and Evolutionpoints"></div>
-            </div>
+            <div id="fishPicName" title="Name of your species"></div>
+            <canvas id="speciesCanvas" width="200" height="120"></canvas>
+            <div id="fishPicFull" title="Total population | Population currently in combat">aaa</div>
+            <div id="growthRate" title="Average growth last month"></div>
+            <div id="adaptions" title="Available Adaptionpoints and Evolutionpoints"></div>
+        </div>
         <div id="right">
             <p id="ocean1"></p>
         </div>
@@ -116,17 +116,14 @@
             <div id="speciesSalt"></div>
             <div id="speciesTaste"></div>
             <div id="speciesValue"></div>
-            <!-- <canvas id="speciesCanvas" width="200" height="120"></canvas> -->
         </div>
     </div>
     <div id="speciesScreenAi" hidden>
-        <!-- <h2>Competing Species</h2> -->
-        <!-- <hr> -->
         <form id="fishListForm">
             <select id="fishSelect">
             </select>
         </form>
-        
+
         <div id=aiInfo>
             <div id="speciesNameAi"></div>
             <div id="speciesPopAi"></div>
@@ -154,39 +151,42 @@
                 <br> Spend your adaptionpoints and evolutionpoints to alter the DNA of your fish.
                 <hr>
                 <div id="evSplitLeft">
-                        <div id="speciesTemp2"></div>
-                        <button id="tempNeg" class="adaptionButton" type="button" onclick="adaptionTemperatureNeg();">-</button>
-                        <button id="tempPos" class="adaptionButton" type="button" onclick="adaptionTemperaturePos()">+</button>
-                        <div id="speciesSalt2"></div>
-                        <button id="saltNeg" class="adaptionButton" type="button" onclick="adaptionSalinityNeg();">-</button>
-                        <button id="saltPos" class="adaptionButton" type="button" onclick="adaptionSalinityPos()">+</button>
-                        <div id="speciesTaste2"></div>
-                        <button id="tasteNeg" class="adaptionButton" type="button" onclick="adaptionTasteNeg();">-</button>
-                        <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
+                    <div id="speciesTemp2"></div>
+                    <button id="tempNeg" class="adaptionButton" type="button" onclick="adaptionTemperatureNeg();">-</button>
+                    <button id="tempPos" class="adaptionButton" type="button" onclick="adaptionTemperaturePos()">+</button>
+                    <div id="speciesSalt2"></div>
+                    <button id="saltNeg" class="adaptionButton" type="button" onclick="adaptionSalinityNeg();">-</button>
+                    <button id="saltPos" class="adaptionButton" type="button" onclick="adaptionSalinityPos()">+</button>
+                    <div id="speciesTaste2"></div>
+                    <button id="tasteNeg" class="adaptionButton" type="button" onclick="adaptionTasteNeg();">-</button>
+                    <button id="tastePos" class="adaptionButton" type="button" onclick="adaptionTastePos()">+</button>
                 </div>
                 <div id="evSplitRight">
-                <div id="evolutionPoints">
+                    <div id="evolutionPoints">
                     </div>
-                <div class="talentButtons">
-                    <p>Tier 3</p>
-                    <button id="TierOneA" class="talentButton" type="button" onclick="">-</button>
-                    <button id="TierTwoA" class="talentButton" type="button" onclick="">-</button>
-                    <button id="TierThreeA" class="talentButton" type="button" onclick="">-</button>
-                    <hr>
-                    <p>Tier 2</p>
-                    <button id="TierOneD" class="talentButton" type="button" title="Bigger teeth increase the damage your species can cause others" onclick="">Teeth</button>
-                    <button id="TierTwoD" class="talentButton" type="button" title="Thick skin decreases death rate from combat" onclick="">Thick skin</button>
-                    <button id="TierThreeD" class="talentButton" type="button" title="Making your species poisonous will decrease market value" onclick="">Poison</button>
-                    <hr>
-                    <p>Tier 1</p>
-                    <button id="talentTaste" class="talentButton" title="By producing small amounts of toxins the taste of our species can be inedible for all non-aquatic predators. Requires Taste: Disgusting"onclick="evolutionTaste()">Inedibility 0/2</button>
-                    <button id="talentFertility" class="talentButton" type="button"  title="Increases growth rate slightly" onclick="">Fertility</button>
-                    <button id="talentCamouflage" class="talentButton" type="button"  title="Decreases amount of population in combat" onclick="">Camouflage</button>
-                    <hr>
+                    <div class="talentButtons">
+                        <p>Tier 3</p>
+                        <button id="TierOneA" class="talentButton" type="button" onclick="">-</button>
+                        <button id="TierTwoA" class="talentButton" type="button" onclick="">-</button>
+                        <button id="TierThreeA" class="talentButton" type="button" onclick="">-</button>
+                        <hr>
+                        <p>Tier 2</p>
+                        <button id="TierOneD" class="talentButton" type="button" title="Bigger teeth increase the damage your species can cause others"
+                            onclick="">-</button>
+                        <button id="TierTwoD" class="talentButton" type="button" title="Thick skin decreases death rate from combat" onclick="">-</button>
+                        <button id="TierThreeD" class="talentButton" type="button" title="Making your species poisonous will decrease market value"
+                            onclick="">-</button>
+                        <hr>
+                        <p>Tier 1</p>
+                        <button id="talentTaste" class="talentButton" title="By producing small amounts of toxins the taste of our species can be inedible for all non-aquatic predators. Requires Taste: Disgusting"
+                            onclick="evolutionTaste()">Inedibility 0/2</button>
+                        <button id="talentFertility" class="talentButton" type="button" title="Increases growth rate slightly" onclick="">Fertility</button>
+                        <button id="talentCamouflage" class="talentButton" type="button" title="Decreases amount of population in combat" onclick="">-</button>
+                        <hr>
+                    </div>
                 </div>
-            </div>
-            </div>
         </div>
+    </div>
     </div>
     <div id="historyScreen" hidden>
         <h2>History</h2>
